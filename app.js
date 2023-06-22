@@ -1,6 +1,8 @@
 const connectDb = require("./database");
 const express = require("express");
 const morgan = require("morgan");
+const passport = require("passport");
+const { localStrategy } = require("./middleware/passport");
 const app = express();
 const urlRoutes = require("./api/urls/urls.routes");
 const userRoutes = require("./api/users/users.routes");
@@ -8,6 +10,8 @@ const userRoutes = require("./api/users/users.routes");
 connectDb();
 app.use(express.json());
 app.use(morgan("dev"));
+app.use(passport.initialize());
+passport.use(localStrategy);
 
 app.use("/urls", urlRoutes);
 app.use(userRoutes);

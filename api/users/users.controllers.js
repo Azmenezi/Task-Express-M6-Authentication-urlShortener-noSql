@@ -2,19 +2,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../../models/User");
 
-exports.signin = async (req, res) => {
-  try {
-  } catch (err) {
-    res.status(500).json("Server Error");
-  }
-};
-
-const hashedPasswrod = async (password) => {
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-  return hashedPassword;
-};
-
 const createToken = (user) => {
   const payload = {
     username: user.username,
@@ -24,6 +11,21 @@ const createToken = (user) => {
     expiresIn: process.env.JWT_TOKEN_EXP,
   });
   return token;
+};
+
+exports.signin = async (req, res) => {
+  try {
+    const token = createToken(req.user);
+    res.status(200).json({ token });
+  } catch (err) {
+    res.status(500).json("Server Error");
+  }
+};
+
+const hashedPasswrod = async (password) => {
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  return hashedPassword;
 };
 
 exports.signup = async (req, res) => {
