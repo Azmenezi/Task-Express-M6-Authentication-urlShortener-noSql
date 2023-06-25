@@ -32,6 +32,7 @@ exports.jwtStrategy = new JWTStrategy(
       }
 
       const user = await User.findById(tokenPayload._id);
+      if (!user) return done(null, false);
       return done(null, user);
     } catch (error) {
       done(error, false);
