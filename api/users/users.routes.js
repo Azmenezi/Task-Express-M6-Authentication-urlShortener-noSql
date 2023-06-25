@@ -12,6 +12,10 @@ router.post(
   signin
 );
 
-router.get("/users", getUsers);
+router.get(
+  "/users",
+  passport.authenticate("jwt", { session: false }),
+  getUsers
+);
 
 module.exports = router;
